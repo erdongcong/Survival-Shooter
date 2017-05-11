@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
-public class EnemyHealth : MonoBehaviour
+public class EnemyHealth : NetworkBehaviour
 {
     public int startingHealth = 100;
+    [SyncVar]
     public int currentHealth;
     public float sinkSpeed = 2.5f;
     public int scoreValue = 10;
     public AudioClip deathClip;
 
 
-    Animator anim;
+    NetworkAnimator anim;
     AudioSource enemyAudio;
     ParticleSystem hitParticles;
     CapsuleCollider capsuleCollider;
@@ -19,7 +21,7 @@ public class EnemyHealth : MonoBehaviour
 
     void Awake()
     {
-        anim = GetComponent<Animator>();
+        anim = GetComponent<NetworkAnimator>();
         enemyAudio = GetComponent<AudioSource>();
         hitParticles = GetComponentInChildren<ParticleSystem>();
         capsuleCollider = GetComponent<CapsuleCollider>();
@@ -36,33 +38,33 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-
-    public void TakeDamage(int amount, Vector3 hitPoint)
+    [Server]
+    public int TakeDamage(int amount, Vector3 hitPoint)
     {
-        if (isDead)
-            return;
-
-        enemyAudio.Play();
-
+        RpcPlayEnemyEffects(hitPoint);
         currentHealth -= amount;
-
-        hitParticles.transform.position = hitPoint;
-        hitParticles.Play();
 
         if (currentHealth <= 0)
         {
-            Death();
+            RpcDeath();
+            return scoreValue;
         }
+        return 0;
     }
 
-
-    void Death()
+    [ClientRpc]
+    void RpcPlayEnemyEffects(Vector3 hitPoint)
+    {
+        enemyAudio.Play();
+        hitParticles.transform.position = hitPoint;
+        hitParticles.Play();
+    }
+    [ClientRpc]
+    void RpcDeath()
     {
         isDead = true;
-
-        capsuleCollider.isTrigger = true;
-
         anim.SetTrigger("Dead");
+        capsuleCollider.isTrigger = true;
 
         enemyAudio.clip = deathClip;
         enemyAudio.Play();
@@ -74,7 +76,13 @@ public class EnemyHealth : MonoBehaviour
         GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
         isSinking = true;
-        ScoreManager.score += scoreValue;
-        Destroy(gameObject, 2f);
+        //ScoreManager.score += scoreValue;
+        CmdDestroy(gameObject, 2f);
+    }
+
+    [Command]
+    void CmdDestroy(GameObject gameObject, float delay)
+    {
+        Destroy(gameObject, delay);
     }
 }

@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class EnemyAttack : MonoBehaviour
+public class EnemyAttack : NetworkBehaviour
 {
     public float timeBetweenAttacks = 0.5f;
     public int attackDamage = 10;
 
-
-    Animator anim;
-    GameObject player;
+    NetworkAnimator anim;
     PlayerHealth playerHealth;
     EnemyHealth enemyHealth;
     bool playerInRange;
@@ -17,41 +16,42 @@ public class EnemyAttack : MonoBehaviour
 
     void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerHealth = player.GetComponent<PlayerHealth>();
         enemyHealth = GetComponent<EnemyHealth>();
-        anim = GetComponent<Animator>();
+        anim = GetComponent<NetworkAnimator>();
     }
 
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == player)
+        if (other.gameObject.tag == "Player")
         {
             playerInRange = true;
+            playerHealth = other.GetComponent<PlayerHealth>();
         }
     }
 
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == player)
+        if (other.gameObject.tag == "Player")
         {
             playerInRange = false;
+            playerHealth = null;
         }
     }
 
-
+    [Server]
     void Update()
     {
         timer += Time.deltaTime;
 
         if (timer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0)
         {
+            timer = 0f;
             Attack();
         }
 
-        if (playerHealth.currentHealth <= 0)
+        if (GameOverManager.gameBegin == true && PlayerMovement.players.Count == 0)
         {
             anim.SetTrigger("PlayerDead");
         }
@@ -60,7 +60,6 @@ public class EnemyAttack : MonoBehaviour
 
     void Attack()
     {
-        timer = 0f;
 
         if (playerHealth.currentHealth > 0)
         {

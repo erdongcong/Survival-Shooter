@@ -40,7 +40,6 @@ GameObject:
   - component: {fileID: 120077490745600842}
   - component: {fileID: 108364964092673588}
   - component: {fileID: 82356827701096768}
-  - component: {fileID: 114121850920141092}
   m_Layer: 0
   m_Name: GunBarrelEnd
   m_TagString: Untagged
@@ -62,6 +61,10 @@ GameObject:
   - component: {fileID: 82056524307871894}
   - component: {fileID: 114098139490922492}
   - component: {fileID: 114396570030653876}
+  - component: {fileID: 114921525318031028}
+  - component: {fileID: 114192177668231330}
+  - component: {fileID: 114929509192019814}
+  - component: {fileID: 114498205781619608}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -378,20 +381,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 6
---- !u!114 &114121850920141092
+--- !u!114 &114192177668231330
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1430959089145066}
+  m_GameObject: {fileID: 1506757382853620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27c63be2a8918c741863160b9d9da122, type: 3}
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagePerShot: 20
-  timeBetweenBullets: 0.15
-  range: 100
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 2
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 0.00001
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114396570030653876
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -405,11 +414,75 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 100
   currentHealth: 0
-  healthSlider: {fileID: 0}
-  damageImage: {fileID: 0}
   deathClip: {fileID: 8300000, guid: d36a393bca4582043982db9089e1694f, type: 3}
   flashSpeed: 5
   flashColour: {r: 1, g: 0, b: 0, a: 0.43529412}
+--- !u!114 &114498205781619608
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1506757382853620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27c63be2a8918c741863160b9d9da122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damagePerShot: 20
+  timeBetweenBullets: 0.15
+  range: 100
+  shootPosition: {fileID: 4143897307969070}
+--- !u!114 &114921525318031028
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1506757382853620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 187
+    i1: 53
+    i2: 197
+    i3: 242
+    i4: 207
+    i5: 77
+    i6: 136
+    i7: 36
+    i8: 184
+    i9: 162
+    i10: 18
+    i11: 67
+    i12: 125
+    i13: 3
+    i14: 52
+    i15: 107
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
+--- !u!114 &114929509192019814
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1506757382853620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 95977769122918094}
+  m_ParameterSendBits: 3
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 
 --- !u!120 &120077490745600842
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -662,7 +735,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -558600614
+  randomSeed: 1640885323
   InitialModule:
     serializedVersion: 3
     enabled: 1

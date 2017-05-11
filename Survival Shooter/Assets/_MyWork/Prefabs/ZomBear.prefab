@@ -45,6 +45,9 @@ GameObject:
   - component: {fileID: 114524270418644712}
   - component: {fileID: 114363296821205628}
   - component: {fileID: 114942003505870432}
+  - component: {fileID: 114653497284515662}
+  - component: {fileID: 114090178855010912}
+  - component: {fileID: 114745466762758050}
   m_Layer: 9
   m_Name: ZomBear
   m_TagString: Untagged
@@ -221,6 +224,26 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 0
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114090178855010912
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1263296354441730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 2
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 0.00001
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114363296821205628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -250,6 +273,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenAttacks: 0.5
   attackDamage: 15
+--- !u!114 &114653497284515662
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1263296354441730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 128
+    i1: 217
+    i2: 210
+    i3: 183
+    i4: 82
+    i5: 243
+    i6: 244
+    i7: 148
+    i8: 139
+    i9: 154
+    i10: 131
+    i11: 145
+    i12: 32
+    i13: 163
+    i14: 67
+    i15: 71
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &114745466762758050
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1263296354441730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 95523362511701740}
+  m_ParameterSendBits: 3
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 
 --- !u!114 &114942003505870432
 MonoBehaviour:
   m_ObjectHideFlags: 1

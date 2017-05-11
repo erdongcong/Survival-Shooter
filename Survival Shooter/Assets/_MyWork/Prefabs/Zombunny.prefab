@@ -44,6 +44,9 @@ GameObject:
   - component: {fileID: 114501575697316658}
   - component: {fileID: 114076345912708694}
   - component: {fileID: 114776981253296904}
+  - component: {fileID: 114476140440316154}
+  - component: {fileID: 114620056639755994}
+  - component: {fileID: 114515151842223200}
   m_Layer: 9
   m_Name: Zombunny
   m_TagString: Untagged
@@ -232,6 +235,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f6618a0da65fa45b24d5105d5d8422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114476140440316154
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1497371328927996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 224
+    i1: 24
+    i2: 249
+    i3: 245
+    i4: 159
+    i5: 32
+    i6: 109
+    i7: 244
+    i8: 217
+    i9: 193
+    i10: 208
+    i11: 82
+    i12: 24
+    i13: 141
+    i14: 130
+    i15: 218
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114501575697316658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -245,6 +280,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenAttacks: 0.5
   attackDamage: 10
+--- !u!114 &114515151842223200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1497371328927996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 95766315019647056}
+  m_ParameterSendBits: 3
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 
+--- !u!114 &114620056639755994
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1497371328927996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 2
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 0.00001
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114776981253296904
 MonoBehaviour:
   m_ObjectHideFlags: 1

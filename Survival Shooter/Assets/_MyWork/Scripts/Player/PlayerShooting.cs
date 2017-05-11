@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
+using UnityStandardAssets.CrossPlatformInput;
 
-public class PlayerShooting : MonoBehaviour
+public class PlayerShooting : NetworkBehaviour
 {
     public int damagePerShot = 20;
     public float timeBetweenBullets = 0.15f;
     public float range = 100f;
+    public Transform shootPosition;
 
 
     float timer;
@@ -21,65 +24,94 @@ public class PlayerShooting : MonoBehaviour
     void Awake()
     {
         shootableMask = LayerMask.GetMask("Shootable");
-        gunParticles = GetComponent<ParticleSystem>();
-        gunLine = GetComponent<LineRenderer>();
-        gunAudio = GetComponent<AudioSource>();
-        gunLight = GetComponent<Light>();
+        gunParticles = GetComponentInChildren<ParticleSystem>();
+        gunLine = GetComponentInChildren<LineRenderer>();
+        gunAudio = shootPosition.GetComponentInChildren<AudioSource>();
+        gunLight = GetComponentInChildren<Light>();
     }
 
 
     void Update()
     {
+        if (!isLocalPlayer)
+            return;
+
         timer += Time.deltaTime;
 
+#if !MOBILE_INPUT
         if (Input.GetButton("Fire1") && timer >= timeBetweenBullets && Time.timeScale != 0)
         {
-            Shoot();
+            timer = 0f;
+            CmdShoot();
         }
+#else
+        if ((CrossPlatformInputManager.GetAxisRaw("Mouse X") != 0 || CrossPlatformInputManager.GetAxisRaw("Mouse Y") != 0) && timer >= timeBetweenBullets)
+        {
+            timer = 0f;
+            CmdShoot();
+        }
+#endif
 
         if (timer >= timeBetweenBullets * effectsDisplayTime)
         {
-            DisableEffects();
+            CmdDisableEffects();
         }
     }
 
-
-    public void DisableEffects()
+    [Command]
+    public void CmdDisableEffects()
+    {
+        RpcDisableEffects();
+    }
+    [ClientRpc]
+    void RpcDisableEffects()
     {
         gunLine.enabled = false;
         gunLight.enabled = false;
     }
 
-
-    void Shoot()
+    [Command]
+    void CmdShoot()
     {
-        timer = 0f;
-
-        gunAudio.Play();
-
-        gunLight.enabled = true;
-
-        gunParticles.Stop();
-        gunParticles.Play();
-
-        gunLine.enabled = true;
-        gunLine.SetPosition(0, transform.position);
-
-        shootRay.origin = transform.position;
+        shootRay.origin = shootPosition.position;
         shootRay.direction = transform.forward;
+        Vector3 hitPoint;
 
         if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
         {
             EnemyHealth enemyHealth = shootHit.collider.GetComponent<EnemyHealth>();
             if (enemyHealth != null)
             {
-                enemyHealth.TakeDamage(damagePerShot, shootHit.point);
+                int enemyScore = enemyHealth.TakeDamage(damagePerShot, shootHit.point);
+                if (enemyScore > 0)
+                    RpcAddScore(enemyScore);
             }
             gunLine.SetPosition(1, shootHit.point);
+            hitPoint = shootHit.point;
         }
         else
         {
-            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+            hitPoint = shootRay.origin + shootRay.direction * range;
         }
+        RpcShowEffects(shootPosition.position, hitPoint);
+    }
+
+    [ClientRpc]
+    void RpcShowEffects(Vector3 origin, Vector3 hitpoint)
+    {
+        gunAudio.Play();
+        gunLight.enabled = true;
+        gunParticles.Stop();
+        gunParticles.Play();
+        gunLine.enabled = true;
+        gunLine.SetPosition(0, origin);
+        gunLine.SetPosition(1, hitpoint);
+    }
+
+    [ClientRpc]
+    void RpcAddScore(int enemyScore)
+    {
+        if (isLocalPlayer)
+            ScoreManager.score += enemyScore;
     }
 }

@@ -43,6 +43,9 @@ GameObject:
   - component: {fileID: 114048205775036944}
   - component: {fileID: 114701426397363706}
   - component: {fileID: 114364137284456798}
+  - component: {fileID: 114996439094247590}
+  - component: {fileID: 114621347014998772}
+  - component: {fileID: 114024819885482950}
   m_Layer: 9
   m_Name: Hellephant
   m_TagString: Untagged
@@ -250,6 +253,25 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 0
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114024819885482950
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1358833674331476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 95732798456785694}
+  m_ParameterSendBits: 0
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 
 --- !u!114 &114048205775036944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -274,6 +296,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f6618a0da65fa45b24d5105d5d8422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114621347014998772
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1358833674331476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 2
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 0.00001
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114701426397363706
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -290,6 +332,38 @@ MonoBehaviour:
   sinkSpeed: 2.5
   scoreValue: 50
   deathClip: {fileID: 8300000, guid: 8c615fd0429f34edf85539d70279360d, type: 3}
+--- !u!114 &114996439094247590
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1358833674331476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 101
+    i1: 233
+    i2: 5
+    i3: 12
+    i4: 132
+    i5: 151
+    i6: 189
+    i7: 228
+    i8: 170
+    i9: 80
+    i10: 235
+    i11: 115
+    i12: 88
+    i13: 19
+    i14: 204
+    i15: 182
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!135 &135034204845740180
 SphereCollider:
   m_ObjectHideFlags: 1

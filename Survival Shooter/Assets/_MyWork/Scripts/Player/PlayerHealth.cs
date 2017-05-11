@@ -2,20 +2,21 @@
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : NetworkBehaviour
 {
     public int startingHealth = 100;
+    [SyncVar(hook ="OnHealthChange")]
     public int currentHealth;
-    public Slider healthSlider;
-    public Image damageImage;
     public AudioClip deathClip;
     public float flashSpeed = 5f;
     public Color flashColour = new Color(1f, 0f, 0f, 0.1f);
 
-
-    Animator anim;
+    Slider healthSlider;
+    Image damageImage;
+    NetworkAnimator anim;
     AudioSource playerAudio;
     PlayerMovement playerMovement;
     PlayerShooting playerShooting;
@@ -25,10 +26,12 @@ public class PlayerHealth : MonoBehaviour
 
     void Awake()
     {
-        anim = GetComponent<Animator>();
+        anim = GetComponent<NetworkAnimator>();
         playerAudio = GetComponent<AudioSource>();
         playerMovement = GetComponent<PlayerMovement>();
         playerShooting = GetComponentInChildren <PlayerShooting> ();
+        healthSlider = GameObject.Find("Canvas/HealthUI/HealthSlider").GetComponent<Slider>();
+        damageImage = GameObject.Find("Canvas/DamageImage").GetComponent<Image>();
         currentHealth = startingHealth;
     }
 
@@ -46,42 +49,52 @@ public class PlayerHealth : MonoBehaviour
         damaged = false;
     }
 
-
+    [Server]
     public void TakeDamage(int amount)
     {
-        damaged = true;
-
+        RpcIsDamage();
+        isDead = false;
         currentHealth -= amount;
-
-        healthSlider.value = currentHealth;
-
-        playerAudio.Play();
-
         if (currentHealth <= 0 && !isDead)
         {
-            Death();
+            playerMovement.enabled = false;
+            playerShooting.enabled = false;
+            RpcDeath();
         }
     }
 
-
-    void Death()
+    [ClientRpc]
+    void RpcIsDamage()
+    {
+        if (isLocalPlayer)
+        {
+            damaged = true;
+            playerAudio.Play();
+        }
+    }
+    [ClientRpc]
+    void RpcDeath()
     {
         isDead = true;
-
-        playerShooting.DisableEffects ();
-
+        playerShooting.CmdDisableEffects();
         anim.SetTrigger("Die");
-
-        playerAudio.clip = deathClip;
-        playerAudio.Play();
-
-        playerMovement.enabled = false;
-        playerShooting.enabled = false;
+        if (isLocalPlayer)
+        {
+            playerAudio.clip = deathClip;
+            playerAudio.Play();
+            playerMovement.enabled = false;
+            playerShooting.enabled = false;
+        }    
     }
 
+    void OnHealthChange(int currentHealth)
+    {
+        if (isLocalPlayer)
+            healthSlider.value = currentHealth;
+    }
 
     public void RestartLevel()
     {
-        SceneManager.LoadScene(0);
+        return;
     }
 }

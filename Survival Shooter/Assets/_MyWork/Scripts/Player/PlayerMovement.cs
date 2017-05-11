@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using UnityEngine.Networking;
+using System.Collections.Generic;
 
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     public float speed = 6f;            // The speed that the player will move at.
+    public static List<PlayerMovement> players = new List<PlayerMovement>();
 
-
+    GameObject mainCamera;
+    Vector3 offset;
     Vector3 movement;                   // The vector to store the direction of the player's movement.
-    Animator anim;                      // Reference to the animator component.
+    NetworkAnimator anim;                      // Reference to the animator component.
     Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
 #if !MOBILE_INPUT
     int floorMask;                      // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
@@ -23,13 +27,34 @@ public class PlayerMovement : MonoBehaviour
 #endif
 
         // Set up references.
-        anim = GetComponent<Animator>();
+        anim = GetComponent<NetworkAnimator>();
         playerRigidbody = GetComponent<Rigidbody>();
+        mainCamera = Camera.main.gameObject;
     }
 
+    [ServerCallback]
+    private void OnEnable()
+    {
+        if (!players.Contains(this))
+            players.Add(this);
+
+    }
+    [ServerCallback]
+    private void OnDisable()
+    {
+        if (players.Contains(this))
+            players.Remove(this);
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        offset = mainCamera.transform.position - transform.position;
+    }
 
     void FixedUpdate()
     {
+        if (!isLocalPlayer)
+            return;
         // Store the input axes.
         float h = CrossPlatformInputManager.GetAxisRaw("Horizontal");
         float v = CrossPlatformInputManager.GetAxisRaw("Vertical");
@@ -42,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Animate the player.
         Animating(h, v);
+        mainCamera.transform.position = transform.position + offset;
     }
 
 
@@ -110,6 +136,6 @@ public class PlayerMovement : MonoBehaviour
         bool walking = h != 0f || v != 0f;
 
         // Tell the animator whether or not the player is walking.
-        anim.SetBool("IsWalking", walking);
+        anim.animator.SetBool("IsWalking", walking);
     }
 }

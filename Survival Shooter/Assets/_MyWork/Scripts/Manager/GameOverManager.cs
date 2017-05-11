@@ -1,24 +1,24 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
-public class GameOverManager : MonoBehaviour
+public class GameOverManager : NetworkBehaviour
 {
-    public PlayerHealth playerHealth;
+    public static bool gameBegin;
 
-
-    Animator anim;
+    NetworkAnimator anim;
 
 
     void Awake()
     {
-        anim = GetComponent<Animator>();
+        anim = GetComponent<NetworkAnimator>();
     }
 
-
+    [ServerCallback]
     void Update()
     {
-        if (playerHealth.currentHealth <= 0)
-        {
+        if (PlayerMovement.players.Count > 1)
+            gameBegin = true;
+        if (gameBegin == true && PlayerMovement.players.Count == 0)
             anim.SetTrigger("GameOver");
-        }
     }
 }
